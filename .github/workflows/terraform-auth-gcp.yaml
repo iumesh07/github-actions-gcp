@@ -30,9 +30,11 @@ jobs:
          # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
         - name: 'Set up Cloud SDK'
           uses: 'google-github-actions/setup-gcloud@v1'
+          with:
+            version: ">= 390.0.0"
         
         - id: 'gcloud'
           name:  gcloud
           run: |
-            gcloud config list project
+            gsutil ls
             
