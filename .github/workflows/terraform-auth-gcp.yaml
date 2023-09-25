@@ -36,4 +36,4 @@ jobs:
         - id: 'gcloud'
           name:  gcloud
           run: |
-            gcloud compute instances list
+            gcloud storage ls
