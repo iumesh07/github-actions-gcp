@@ -36,5 +36,4 @@ jobs:
         - id: 'gcloud'
           name:  gcloud
           run: |
-            gcloud storage ls
-            gcloud storage buckets create gs://meow_bucket
+            gcloud compute instances list
