@@ -1,0 +1,38 @@
+name: Terraform GCP Authentication
+
+run-name: ${{ github.actor }} is checking Terraform GCP Authentication
+
+on: [push]
+
+defaults:
+    run:
+      shell: bash
+      #working-directory: /var/
+
+jobs:
+    authenticate-gcp-terraform:
+        runs-on: Ubuntu-latest
+      # Add "id-token" with the intended permissions.
+        permissions:
+          contents: 'read'
+          id-token: 'write'
+  
+        steps:
+        - uses: 'actions/checkout@v3'
+  
+        - id: 'auth'
+          name: 'Authenticate to Google Cloud'
+          uses: 'google-github-actions/auth@v1'
+          with:
+            workload_identity_provider: 'projects/915596426516/locations/global/workloadIdentityPools/github-pool'
+            service_account: 'github-actions-tf@sturdy-tuner-393016.iam.gserviceaccount.com'
+        
+         # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+        - name: 'Set up Cloud SDK'
+          uses: 'google-github-actions/setup-gcloud@v1'
+        
+        - id: 'gcloud'
+          name:  gcloud
+          run: |
+            gsutil mb -l asia gs://github-umesh-bucket
+            
