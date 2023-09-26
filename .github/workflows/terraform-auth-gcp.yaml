@@ -16,7 +16,7 @@ jobs:
         permissions:
           contents: 'read'
           id-token: 'write'
-  
+          issues: write
         steps:
         - uses: 'actions/checkout@v3'
   
@@ -70,10 +70,11 @@ jobs:
           uses: actions/upload-artifact@v3
           with:
             name: tfplan
-            path: tfplan
+            path: terraform-gcs/tfplan
             
         # Create string output of Terraform Plan
         - name: Create String Output
+          working-directory: terraform-gcs
           id: tf-plan-string
           run: |
             TERRAFORM_PLAN=$(terraform show -no-color tfplan)
@@ -91,6 +92,7 @@ jobs:
             
         # Publish Terraform Plan as task summary
         - name: Publish Terraform Plan to Task Summary
+          working-directory: terraform-gcs
           env:
             SUMMARY: ${{ steps.tf-plan-string.outputs.summary }}
           run: |
