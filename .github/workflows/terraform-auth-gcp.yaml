@@ -42,6 +42,5 @@ jobs:
           name:  gcloud
           working-directory: terraform-gcs
           run: |
-            gcloud storage ls
-            pwd
+            gcloud storage cp gs://umesh-tf-bucket-gcs/umesh-tf-bucket-gcs/gcs-bucket-tf-state/*.txt .
             ls -lla
