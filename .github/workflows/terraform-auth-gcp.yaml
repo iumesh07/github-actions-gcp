@@ -43,7 +43,6 @@ jobs:
           working-directory: terraform-gcs
           run: |
             gcloud storage cp gs://umesh-tf-bucket-gcs/gcs-bucket-tf-state/*.tfstate .
-            ls -lla
 
         - name: Terraform init
           working-directory: terraform-gcs
