@@ -49,9 +49,20 @@ jobs:
           working-directory: terraform-gcs
           run: terraform init
 
-        - name: Terraform Plan
-          working-directory: terraform-gcs
-          id: plan
-          run: terraform plan -no-color
+        - id: plan
+          run: terraform plan -no-color -lock=false -detailed-exitcode -compact-warnings
           continue-on-error: true
+        - run: |
+            cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+            ### 🤖 Terraform plan
+            ```terraform
+            ${{ steps.plan.outputs.stdout }}
+            ```
+            EOF
+
+        # - name: Terraform Plan
+        #   working-directory: terraform-gcs
+        #   id: plan
+        #   run: terraform plan -no-color
+        #   continue-on-error: true
         
