@@ -51,9 +51,12 @@ jobs:
 
         - id: plan
           working-directory: terraform-gcs
-          run: terraform plan -no-color
+          run: terraform plan -no-color -lock=false -detailed-exitcode -compact-warnings
           continue-on-error: true
-        - run: |
+        
+        - name: Terraform Plan Summary
+          working-directory: terraform-gcs
+          run: |
             cat << 'EOF' >> $GITHUB_STEP_SUMMARY
             ### 🤖 Terraform plan
             ```terraform
