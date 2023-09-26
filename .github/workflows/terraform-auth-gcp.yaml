@@ -50,6 +50,7 @@ jobs:
           run: terraform init
         
         - name: Terraform Plan
+          working-directory: terraform-gcs
           id: tf-plan
           run: |
             export exitcode=0
