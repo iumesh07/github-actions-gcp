@@ -24,8 +24,8 @@ jobs:
           name: 'Authenticate to Google Cloud'
           uses: 'google-github-actions/auth@v1'
           with:
-            workload_identity_provider: ''
-            service_account: ''
+            workload_identity_provider: 'projects/915596426516/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+            service_account: 'github-actions-tf@sturdy-tuner-393016.iam.gserviceaccount.com'
         
          # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
         - name: 'Set up Cloud SDK'
@@ -33,8 +33,15 @@ jobs:
           with:
             version: ">= 390.0.0"
         
+        - name: Print Working Directory
+          run: |
+            pwd
+            ls -la
+        
         - id: 'gcloud'
           name:  gcloud
+          working-directory: terraform-gcs
           run: |
             gcloud storage ls
-            gcloud storage buckets create gs://meow_bucket
+            pwd
+            ls -la
