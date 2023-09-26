@@ -51,7 +51,7 @@ jobs:
         
         - id: 'gcloud'
           name:  gcloud
-          working-directory: terraform-gcs
+          working-directory: ${{ github.event.inputs.folder }}
           run: |
             gcloud storage cp gs://umesh-tf-bucket-gcs/gcs-bucket-tf-state/*.tfstate .
 
