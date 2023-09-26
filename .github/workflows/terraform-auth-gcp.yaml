@@ -2,7 +2,18 @@ name: Terraform GCP Authentication
 
 run-name: ${{ github.actor }} is checking Terraform GCP Authentication
 
-on: [push]
+on:
+  workflow_dispatch:
+    inputs:
+      folder:
+        description: 'Terraform Folder'
+        required: true
+        default: 'terraform-gcs'
+        type: choice
+        options:
+        - terraform-gcs
+        - terraform-gce
+        - terraform-gke
 
 defaults:
     run:
@@ -142,12 +153,6 @@ jobs:
                     repo: context.repo.repo,
                     title: title,
                     body: body
-                })
-                  github.rest.issues.addLabels({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    labels: ['Drift','Umesh']
                 })
                 }
                 
