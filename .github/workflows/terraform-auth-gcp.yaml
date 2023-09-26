@@ -143,13 +143,13 @@ jobs:
                     title: title,
                     body: body
                 })
-                }
                   github.rest.issues.addLabels({
                     issue_number: context.issue.number,
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     labels: ['Drift','Umesh']
                 })
+                }
                 
         # If changes aren't detected, close any open drift issues
         - name: Publish Drift Report
