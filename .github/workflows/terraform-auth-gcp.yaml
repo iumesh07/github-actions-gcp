@@ -50,6 +50,7 @@ jobs:
           run: terraform init
 
         - id: plan
+          working-directory: terraform-gcs
           run: terraform plan -no-color
           continue-on-error: true
         - run: |
