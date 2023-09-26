@@ -179,7 +179,11 @@ jobs:
                     issue_number: issue.number,
                     state: 'closed'
                   })
-                } 
+                }
+        - name: View context attributes
+          uses: actions/github-script@v6
+          with:
+            script: console.log(context) 
                 
         # Mark the workflow as failed if drift detected 
         - name: Error on Failure
