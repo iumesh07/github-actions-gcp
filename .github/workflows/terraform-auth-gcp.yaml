@@ -2,9 +2,11 @@ name: Terraform Drift Detection Workflow
 
 run-name: ${{ github.actor }} is checking Terraform GCP Authentication
 
-on:
-  schedule:
-    - cron: '*/5 * * * *'
+# on:
+#   schedule:
+#     - cron: '*/5 * * * *'
+
+on: [push]
 
 # on:
 #   workflow_dispatch:
