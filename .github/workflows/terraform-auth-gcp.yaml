@@ -30,6 +30,7 @@ jobs:
     terraform-drift:
         runs-on: Ubuntu-latest
         strategy:
+          fail-fast: false
           matrix:
             folders: [terraform-gcs, terraform-gce, terraform-gke]
       # Add "id-token" with the intended permissions.
