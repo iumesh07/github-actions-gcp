@@ -1,19 +1,23 @@
-name: Terraform GCP Authentication
+name: Terraform Drift Detection
 
 run-name: ${{ github.actor }} is checking Terraform GCP Authentication
 
 on:
-  workflow_dispatch:
-    inputs:
-      folder:
-        description: 'Terraform Folder'
-        required: true
-        default: 'terraform-gcs'
-        type: choice
-        options:
-        - terraform-gcs
-        - terraform-gce
-        - terraform-gke
+  schedule:
+    - cron: '5 * * * *'
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       folder:
+#         description: 'Terraform Folder'
+#         required: true
+#         default: 'terraform-gcs'
+#         type: choice
+#         options:
+#         - terraform-gcs
+#         - terraform-gce
+#         - terraform-gke
 
 defaults:
     run:
@@ -23,6 +27,9 @@ defaults:
 jobs:
     terraform-drift:
         runs-on: Ubuntu-latest
+        strategy:
+          matrix:
+            folders: [terraform-gcs, terraform-gce, terraform-gke]
       # Add "id-token" with the intended permissions.
         permissions:
           contents: 'read'
@@ -51,16 +58,16 @@ jobs:
         
         - id: 'gcloud'
           name:  gcloud
-          working-directory: ${{ github.event.inputs.folder }}
+          working-directory: ${{ matrix.folders }}
           run: |
             gcloud storage cp gs://umesh-tf-bucket-gcs/gcs-bucket-tf-state/*.tfstate .
 
         - name: Terraform init
-          working-directory: ${{ github.event.inputs.folder }}
+          working-directory: ${{ matrix.folders }}
           run: terraform init
         
         - name: Terraform Plan
-          working-directory: ${{ github.event.inputs.folder }}
+          working-directory: ${{ matrix.folders }}
           id: tf-plan
           run: |
             export exitcode=0
@@ -80,11 +87,11 @@ jobs:
           uses: actions/upload-artifact@v3
           with:
             name: tfplan
-            path: ${{ github.event.inputs.folder }}/tfplan
+            path: ${{ matrix.folders }}/tfplan
             
         # Create string output of Terraform Plan
         - name: Create String Output
-          working-directory: ${{ github.event.inputs.folder }}
+          working-directory: ${{ matrix.folders }}
           id: tf-plan-string
           run: |
             TERRAFORM_PLAN=$(terraform show -no-color tfplan)
@@ -102,7 +109,7 @@ jobs:
             
         # Publish Terraform Plan as task summary
         - name: Publish Terraform Plan to Task Summary
-          working-directory: ${{ github.event.inputs.folder }}
+          working-directory: ${{ matrix.folders }}
           env:
             SUMMARY: ${{ steps.tf-plan-string.outputs.summary }}
           run: |
