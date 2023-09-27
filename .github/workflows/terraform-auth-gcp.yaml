@@ -21,7 +21,7 @@ defaults:
       #working-directory: /var/
 
 jobs:
-    authenticate-gcp-terraform:
+    terraform-drift:
         runs-on: Ubuntu-latest
       # Add "id-token" with the intended permissions.
         permissions:
